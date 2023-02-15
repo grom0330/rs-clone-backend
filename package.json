@@ -1,0 +1,31 @@
+{
+  "name": "rs-clone-backend",
+  "version": "1.0.0",
+  "description": "Backend for rs-clone app",
+  "main": "index.ts",
+  "scripts": {
+    "start": "nodemon index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grom0330/rs-clone-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/grom0330/rs-clone-backend/issues"
+  },
+  "homepage": "https://github.com/grom0330/rs-clone-backend#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.18.2",
+    "express-validator": "^6.14.3",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.9.1",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17"
+  }
+}
