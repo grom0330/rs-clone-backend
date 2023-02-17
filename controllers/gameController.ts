@@ -53,7 +53,7 @@ async function setBestGame(user: typeof User, game: typeof Game) {
   }
 }
 
-async function setRating(username: String, game: typeof Game) {
+async function getRating(username: String, game: typeof Game) {
   let rating = await Rating.findOne({ username: username }).populate(
     'bestGame'
   );
@@ -79,30 +79,34 @@ async function setRating(username: String, game: typeof Game) {
 class gameController {
   async setGame(req: CustomRequest, res: Express.Response) {
     try {
-      const { wpm, accuracy, chars, mode, date } = req.body;
+      const { wpm, accuracy, chars, mode, time } = req.body;
       const userId = req.user.id;
       const initialUser = await User.findById(userId).populate('bestGames');
       const game = new Game({
         user: userId,
-        wpm: wpm,
+        wpm,
         accuracy,
         chars,
         mode,
-        date,
+        time,
       });
+
+      console.log(wpm, accuracy, chars, mode, time);
 
       await game.save();
 
       await User.findByIdAndUpdate(userId, {
         games: initialUser.games.concat(game),
         gameCount: initialUser.gameCount + 1,
+        allTime: initialUser.allTime + time,
       });
+      console.log(1);
 
       setBestGames(initialUser, game);
       setBestGame(await initialUser.populate('bestGame'), game);
-      setRating(initialUser.username, game);
+      getRating(initialUser.username, game);
 
-      return res.json();
+      return res.json({ message: 'Set game successful' });
     } catch (error) {
       res.status(405).json({ message: 'Set user error' });
     }
@@ -111,14 +115,38 @@ class gameController {
   async getRating(req: CustomRequest, res: Express.Response) {
     try {
       const rating = await Rating.find().populate('bestGame');
- 
+
       return res.json(
         rating.sort(
           (a: typeof Game, b: typeof Game) => b.bestGame.wpm - a.bestGame.wpm
         )
       );
     } catch (error) {
-      res.status(405).json({ message: 'Get rating error' });
+      res.status(404).json({ message: 'Get rating error' });
+    }
+  }
+
+  async getUserProfile(req: CustomRequest, res: Express.Response) {
+    try {
+      const { username } = req.body;
+      const userId = req.user.id;
+      const initialUser = await User.findOne({ username: username })
+        .populate('bestGame')
+        .populate('bestGames')
+        .populate('games');
+
+      if (initialUser._id.toString() === userId) {
+        return res.json(initialUser);
+      } else if (initialUser) {
+        return res.json({
+          username: initialUser.username,
+          dateCreation: initialUser.dateCreation,
+          gameCount: initialUser.gameCount,
+          bestGames: initialUser.bestGames,
+        });
+      }
+    } catch (error) {
+      res.status(404).json({ message: 'Get user profile error' });
     }
   }
 }

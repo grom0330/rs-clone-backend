@@ -6,8 +6,8 @@ const GameSchema = new mongoose.Schema({
   accuracy: { type: Number, require: true },
   chars: [{ type: Number, require: true }],
   mode: { type: String, require: true },
-  date: { type: String, require: true },
-  // Second...
+  date: { type: Date, default: Date.now, require: true },
+  time: { type: Number, require: true },
 });
 
 module.exports = mongoose.model('Game', GameSchema);

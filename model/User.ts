@@ -7,9 +7,9 @@ const UserSchema = new Schema({
   gameCount: { type: Number, default: 0 },
   bestGame: { type: Schema.Types.ObjectId, ref: 'Game' },
   bestGames: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
-  // Position in rating (later)
   // Theme (later)
   games: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
+  allTime: { type: Number, require: true, default: 0 },
 });
 
 export { Schema, model };
