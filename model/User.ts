@@ -9,6 +9,7 @@ const UserSchema = new Schema({
   bestGames: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
   // Theme (later)
   games: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
+  settings: { type: Schema.Types.ObjectId, ref: 'Settings', required: true },
   allTime: { type: Number, require: true, default: 0 },
 });
 

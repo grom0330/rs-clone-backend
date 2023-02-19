@@ -2,6 +2,7 @@ import Express from 'express';
 const User = require('../model/User');
 const Game = require('../model/Game');
 const Rating = require('../model/Rating');
+const Settings = require('../model/Settings');
 const { JwtPayload } = require('jsonwebtoken');
 
 export interface CustomRequest extends Express.Request {
@@ -91,8 +92,6 @@ class gameController {
         time,
       });
 
-      console.log(wpm, accuracy, chars, mode, time);
-
       await game.save();
 
       await User.findByIdAndUpdate(userId, {
@@ -100,7 +99,6 @@ class gameController {
         gameCount: initialUser.gameCount + 1,
         allTime: initialUser.allTime + time,
       });
-      console.log(1);
 
       setBestGames(initialUser, game);
       setBestGame(await initialUser.populate('bestGame'), game);
@@ -147,6 +145,31 @@ class gameController {
       }
     } catch (error) {
       res.status(404).json({ message: 'Get user profile error' });
+    }
+  }
+
+  async setUserSettings(req: CustomRequest, res: Express.Response) {
+    try {
+      const changeSettings = req.body;
+      const initialUser = await User.findById(req.user.id).populate('settings');
+
+      const [[settingsKey, settingsValue]] = Object.entries(changeSettings);
+      const newSettings = Object.assign(
+        initialUser.settings[settingsKey],
+        settingsValue
+      );
+
+      await Settings.findOneAndUpdate(
+        { user: req.user.id },
+        {
+          [settingsKey]: newSettings,
+        }
+      );
+      console.log(await User.findById(req.user.id).populate('settings'));
+
+      return res.json({ message: 'Set user settings successful' });
+    } catch (error) {
+      res.status(404).json({ message: 'Set user settings error' });
     }
   }
 }

@@ -1,6 +1,7 @@
 import Express from 'express';
 import { ObjectId } from 'mongoose';
 const User = require('../model/User');
+const Settings = require('../model/Settings');
 var bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
@@ -20,18 +21,29 @@ class authController {
       if (!errors.isEmpty()) {
         res.status(400).json({ message: 'Registration error', errors });
       }
+
       const { username, password, dateCreation } = req.body;
       const candidate = await User.findOne({ username });
       if (candidate) {
         return res.status(400).json({ message: 'User has been already exist' });
       }
       const hashPassword = bcrypt.hashSync(password, 5);
+
+      const settings = new Settings();
+      await settings.save();
+
       const user = new User({
         username,
         password: hashPassword,
         dateCreation,
+        settings,
       });
       await user.save();
+
+      await Settings.findByIdAndUpdate(settings._id, {
+        user: user._id,
+      });
+
       return res.json({ message: 'Registration successful' });
     } catch (error) {
       res.status(400).json({ message: 'Registration error' });
