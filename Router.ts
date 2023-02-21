@@ -8,15 +8,14 @@ const authMiddleware = require('./middlewares/authMiddleware');
 router.post(
   '/registration',
   [
-    check('username', 'Username cannot be empty').notEmpty(),
-    check(
-      'username',
-      'Username length should be more then 6 and less 10'
-    ).isLength({ min: 6, max: 10 }),
-    check(
-      'password',
-      'Password length should be more then 4 and less 10'
-    ).isLength({ min: 4, max: 10 }),
+    check('username', 'Username cannot be empty').trim().notEmpty(),
+    check('username', 'Username length should be more then 4 and less 10')
+      .trim()
+      .isLength({ min: 4, max: 10 }),
+    check('password', 'Password cannot be empty').trim().notEmpty(),
+    check('password', 'Password length should be more then 6 and less 10')
+      .trim()
+      .isLength({ min: 6, max: 10 }),
   ],
   authController.registration
 );

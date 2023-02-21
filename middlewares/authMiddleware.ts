@@ -24,6 +24,6 @@ module.exports = function (
     next();
   } catch (error) {
     console.log(error);
-    return res.status(403).json({ message: 'User is not authorized' });
+    return res.send(403).json({ message: 'User is not authorized' });
   }
 };

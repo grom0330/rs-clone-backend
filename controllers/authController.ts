@@ -19,13 +19,13 @@ class authController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        res.status(400).json({ message: 'Registration error', errors });
+        throw new Error(JSON.stringify(errors));
       }
 
       const { username, password, dateCreation } = req.body;
       const candidate = await User.findOne({ username });
       if (candidate) {
-        return res.status(400).json({ message: 'User has been already exist' });
+        throw new Error(JSON.stringify('User has been already exist'));
       }
       const hashPassword = bcrypt.hashSync(password, 5);
 
@@ -46,7 +46,9 @@ class authController {
 
       return res.json({ message: 'Registration successful' });
     } catch (error) {
-      res.status(400).json({ message: 'Registration error' });
+      if (error instanceof Error) {
+        res.status(400).json({ message: JSON.parse(error.message) });
+      }
     }
   }
 
