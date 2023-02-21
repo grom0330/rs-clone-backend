@@ -54,7 +54,7 @@ async function setBestGame(user: typeof User, game: typeof Game) {
   }
 }
 
-async function getRating(username: String, game: typeof Game) {
+async function setRating(username: String, game: typeof Game) {
   let rating = await Rating.findOne({ username: username }).populate(
     'bestGame'
   );
@@ -102,7 +102,7 @@ class gameController {
 
       setBestGames(initialUser, game);
       setBestGame(await initialUser.populate('bestGame'), game);
-      getRating(initialUser.username, game);
+      setRating(initialUser.username, game);
 
       return res.json({ message: 'Set game successful' });
     } catch (error) {
@@ -165,11 +165,20 @@ class gameController {
           [settingsKey]: newSettings,
         }
       );
-      console.log(await User.findById(req.user.id).populate('settings'));
 
       return res.json({ message: 'Set user settings successful' });
     } catch (error) {
       res.status(404).json({ message: 'Set user settings error' });
+    }
+  }
+
+  async getUserSettings(req: CustomRequest, res: Express.Response) {
+    try {
+      const settings = await Settings.findOne({ user: req.user.id });
+
+      return res.json(settings);
+    } catch (error) {
+      res.status(404).json({ message: 'Get user settings error' });
     }
   }
 }

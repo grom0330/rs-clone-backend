@@ -25,5 +25,6 @@ router.patch('/set_game', authMiddleware, gameController.setGame);
 router.get('/get_rating', gameController.getRating);
 router.get('/get_profile', authMiddleware, gameController.getUserProfile);
 router.patch('/set_settings', authMiddleware, gameController.setUserSettings);
+router.get('/get_settings', authMiddleware, gameController.getUserSettings);
 
 module.exports = router;

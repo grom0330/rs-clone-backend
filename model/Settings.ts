@@ -20,8 +20,8 @@ const SettingsSchema = new Schema({
     tpStyle: { type: String, required: true, default: 'mini' },
     tpColor: { type: String, required: true, default: 'main' },
     tpOpacity: { type: Number, required: true, default: 1 },
-    fontSize: { type: Number, required: true, default: 2 },
-    fontFamily: { type: String, required: true, default: 'font1' },
+    fontSize: { type: Number, required: true, default: 1 },
+    fontFamily: { type: String, required: true, default: 'robotoMono' },
   },
   theme: {
     flipTestColors: { type: String, required: true, default: 'off' },
