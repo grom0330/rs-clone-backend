@@ -131,10 +131,20 @@ class gameController {
       const initialUser = await User.findOne({ username: username })
         .populate('bestGame')
         .populate('bestGames')
-        .populate('games');
+        .populate('games')
+        .populate('settings');
 
       if (initialUser._id.toString() === userId) {
-        return res.json(initialUser);
+        return res.json({
+          username: initialUser.username,
+          dateCreation: initialUser.dateCreation,
+          gameCount: initialUser.gameCount,
+          bestGame: initialUser.bestGame,
+          bestGames: initialUser.bestGames,
+          games: initialUser.games,
+          settings: initialUser.settings,
+          allTime: initialUser.allTime,
+        });
       } else if (initialUser) {
         return res.json({
           username: initialUser.username,
