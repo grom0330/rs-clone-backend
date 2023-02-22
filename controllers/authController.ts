@@ -69,15 +69,6 @@ class authController {
       res.status(400).json({ message: 'Login error' });
     }
   }
-
-  async getUsers(req: Express.Request, res: Express.Response) {
-    try {
-      const users = await User.find();
-      res.json(users);
-    } catch (error) {
-      res.status(400).json({ message: 'Set user error' });
-    }
-  }
 }
 
 module.exports = new authController();

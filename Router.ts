@@ -20,7 +20,6 @@ router.post(
   authController.registration
 );
 router.post('/login', authController.login);
-router.get('/users', authMiddleware, authController.getUsers);
 router.patch('/set_game', authMiddleware, gameController.setGame);
 router.get('/get_rating', gameController.getRating);
 router.get('/get_profile', authMiddleware, gameController.getUserProfile);
