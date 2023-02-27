@@ -126,7 +126,8 @@ class gameController {
 
   async getUserProfile(req: CustomRequest, res: Express.Response) {
     try {
-      const { username } = req.body;
+      console.log(1);
+      const username = req.query.username;
       const userId = req.user.id;
       const initialUser = await User.findOne({ username: username })
         .populate('bestGame')
