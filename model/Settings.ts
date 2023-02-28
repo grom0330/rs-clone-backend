@@ -9,18 +9,18 @@ const SettingsSchema = new Schema({
   },
   sound: {
     soundVolume: { type: String, required: true, default: 'quite' },
-    playSoundOnclick: { type: String, required: true, default: 'off' },
+    playSoundOnClick: { type: String, required: true, default: 'off' },
     playSoundOnError: { type: String, required: true, default: 'off' },
   },
   caret: {
     smoothCaret: { type: String, required: true, default: 'off' },
-    caretStyle: { type: String, required: true, default: 'off' },
+    caretStyle: { type: String, required: true, default: 'default' },
   },
   appearance: {
     tpStyle: { type: String, required: true, default: 'mini' },
     tpColor: { type: String, required: true, default: 'main' },
-    tpOpacity: { type: Number, required: true, default: 1 },
-    fontSize: { type: Number, required: true, default: 1 },
+    tpOpacity: { type: String, required: true, default: '1' },
+    fontSize: { type: String, required: true, default: '1' },
     fontFamily: { type: String, required: true, default: 'robotoMono' },
   },
   theme: {

@@ -187,7 +187,15 @@ class gameController {
     try {
       const settings = await Settings.findOne({ user: req.user.id });
 
-      return res.json(settings);
+      console.log(settings);
+
+      return res.json({
+        behavior: settings.behavior,
+        sound: settings.sound,
+        caret: settings.caret,
+        appearance: settings.appearance,
+        theme: settings.theme,
+      });
     } catch (error) {
       res.status(404).json({ message: 'Get user settings error' });
     }
