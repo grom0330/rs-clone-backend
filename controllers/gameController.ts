@@ -197,7 +197,7 @@ class gameController {
         theme: settings.theme,
       });
     } catch (error) {
-      res.status(404).json({ message: 'Get user settings error' });
+      res.status(404).json({ message: 'Get user setting error' });
     }
   }
 }
